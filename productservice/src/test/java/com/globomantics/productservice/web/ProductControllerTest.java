@@ -20,8 +20,7 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -60,7 +59,7 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.quantity", is(10)))
                 .andExpect(jsonPath("$.version", is(1)));
     }
-    
+
     @Test
     @DisplayName("GET /product/1 - Not Found")
     void testGetProductByIdNotFound() throws Exception {
@@ -99,6 +98,23 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.name", is("Product Name")))
                 .andExpect(jsonPath("$.quantity", is(10)))
                 .andExpect(jsonPath("$.version", is(1)));
+    }
+
+
+    @Test
+    @DisplayName("PUT /product/1 - Not Found")
+    void testProductPutNotFound() throws Exception {
+        // Setup mocked service
+        Product putProduct = new Product("Product Name", 10);
+        doReturn(Optional.empty()).when(service).findById(1);
+
+        mockMvc.perform(put("/product/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(HttpHeaders.IF_MATCH, 1)
+                        .content(asJsonString(putProduct)))
+
+                // Validate the response code and content type
+                .andExpect(status().isNotFound());
     }
 
     static String asJsonString(final Object obj) {

@@ -28,4 +28,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         return null;
     }
 
+    @Override
+    public boolean delete( Integer id ) {
+        return false;
+    }
+
+
 }

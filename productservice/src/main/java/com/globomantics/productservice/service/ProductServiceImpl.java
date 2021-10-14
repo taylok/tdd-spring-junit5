@@ -37,4 +37,10 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+    @Override
+    public boolean delete( Integer id ) {
+        return productRepository.delete(id);
+    }
+
+
 }

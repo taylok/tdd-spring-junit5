@@ -40,4 +40,11 @@ public interface ProductRepository {
      */
     Product save(Product product);
 
+    /**
+     * Deletes the product with the specified id.
+     * @param id        The id of the product to delete.
+     * @return          True if the operation was successful.
+     */
+    boolean delete(Integer id);
+
 }
